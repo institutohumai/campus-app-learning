@@ -1,0 +1,15 @@
+.tooltip {
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: var(--tooltip-bottom, 15px);
+    left: var(--tooltip-left, auto);
+    right: var(--tooltip-right, auto);
+    transform: var(--tooltip-transform, none);
+    background-color: black;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    z-index: 3000;
+}
