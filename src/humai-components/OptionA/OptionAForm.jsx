@@ -22,8 +22,8 @@ const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
   // const POSTA_ENABLE = false;
   // const POSTA_NODE = "posta";
   // const COOPARTE_NODE = "cooparteInput";
-  const POSTA_ENABLE = getConfig().HUMAI_POSTA_ENABLE | false;
-  const POSTA_NODE = getConfig().HUMAI_COOPARTE_POSTA_NODE_NAME | "postaInput";
+  const POSTA_ENABLE = getConfig().HUMAI_POSTA_ENABLE;
+  const POSTA_NODE = getConfig().HUMAI_COOPARTE_POSTA_NODE_NAME;
   const COOPARTE_NODE = getConfig().HUMAI_COOPARTE_NODE_NAME;
   const HORARIOS_URL = getConfig().HUMAI_HORARIOS_URL;
 

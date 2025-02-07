@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import ScheduleSelector from 'react-schedule-selector'
 import './Schedule.css'
 import { useTranslation } from './TranslationContext'
+import { getConfig } from '@edx/frontend-platform';
 
 export const Schedule = ({setSchedule, schedule}) => {
     const { translateDOM } = useTranslation()
@@ -11,6 +12,8 @@ export const Schedule = ({setSchedule, schedule}) => {
     const hoveredColor = 'rgba(130, 98, 167, 0.8)'
 
     const startDate = new Date('2023-11-06')
+    const minTime = getConfig().HUMAI_COOPARTE_GRID_MIN_TIME;
+    const maxTime = getConfig().HUMAI_COOPARTE_GRID_MAX_TIME;
 
     useEffect(() => {
         translateDOM()
@@ -24,8 +27,8 @@ export const Schedule = ({setSchedule, schedule}) => {
                 dateFormat="dddd"
                 timeFormat="HH:mm"
                 numDays={7}
-                minTime={8}
-                maxTime={23}
+                minTime={minTime}
+                maxTime={maxTime}
                 rowGap='1px'
                 columnGap='1px'
                 hourlyChunks={2}
