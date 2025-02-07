@@ -94,11 +94,13 @@ const OptionCIframe = ({ onBack }) => {
                   }
                 </p>
                 
-                <div className="button-container">
+                <div
+                  className="button-container"
+                  aria-label="Agregar a Google Calendar"
+                  aria-data-url={getAddGCalendarUrl(event)}
+                >
                   <SubmitButton 
                     handleSubmit={() => window.open(getAddGCalendarUrl(event), '_blank')}
-                    aria-label="Agregar a Google Calendar"
-                    aria-data-url={getAddGCalendarUrl(event)}
                     text="Agregar a Google Calendar"
                   />
 
