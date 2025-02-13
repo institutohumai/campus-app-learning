@@ -13,7 +13,12 @@ const OptionCIframe = ({ onBack }) => {
   const [loading, setLoading] = useState(true);
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   const CALENDAR_URL = getConfig().HUMAI_CALENDAR_URL;
+  const DAYS_BEFORE_CALENDAR = getConfig().HUMAI_DAYS_BEFORE_CALENDAR;
+  // const DAYS_BEFORE_CALENDAR = 3;
+  const daysSpan = new Date();
+  daysSpan.setDate(daysSpan.getDate() - DAYS_BEFORE_CALENDAR);
 
+  
   const formatGCalendarDate = (date) => {
     return new Date(date).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
   };
@@ -29,9 +34,9 @@ const OptionCIframe = ({ onBack }) => {
   const loadEvents = async (url) => {
     try {
       const calendarEvents = await fetchICSFile(url);
-
-      calendarEvents.sort((a, b) => a.start - b.start);
-      setEvents(calendarEvents);
+      const validCalendarEvents = calendarEvents.filter((event) => event.start > daysSpan);
+      validCalendarEvents.sort((a, b) => a.start - b.start);
+      setEvents(validCalendarEvents);
     } catch (error) {
       console.error('Error loading calendar events:', error);
     } finally {
