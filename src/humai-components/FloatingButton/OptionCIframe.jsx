@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 
 import './OptionCIframe.css';
 import BackButton from "../ButtonsTypes/BackButton";
-import { fetchICSFile, calendarUrl } from "../Calendar/parseICS";
+import { fetchICSFile } from "../Calendar/parseICS";
 import { SubmitButton } from "../ButtonsTypes/SubmitButton";
+import { getConfig } from '@edx/frontend-platform';
+// import { CALENDAR_URL } from "../../utils/constants";
 
 
 const OptionCIframe = ({ onBack }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const CALENDAR_URL = getConfig().HUMAI_CALENDAR_URL;
 
   const formatGCalendarDate = (date) => {
     return new Date(date).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
@@ -37,7 +40,7 @@ const OptionCIframe = ({ onBack }) => {
   };
 
   useEffect(() => {
-    loadEvents(calendarUrl);
+    loadEvents(CALENDAR_URL);
   }, []);
 
   return (
@@ -94,13 +97,11 @@ const OptionCIframe = ({ onBack }) => {
                   }
                 </p>
                 
-                <div
-                  className="button-container"
-                  aria-label="Agregar a Google Calendar"
-                  aria-data-url={getAddGCalendarUrl(event)}
-                >
+                <div className="button-container">
                   <SubmitButton 
                     handleSubmit={() => window.open(getAddGCalendarUrl(event), '_blank')}
+                    aria-label="Agregar a Google Calendar"
+                    aria-data-url={getAddGCalendarUrl(event)}
                     text="Agregar a Google Calendar"
                   />
 

@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
-import { DISCORD_URL, CAMPUS_TITO_API_KEY } from "../../utils/constants";
+// import { DISCORD_URL, CAMPUS_TITO_API_KEY } from "../../utils/constants";
+import { getConfig } from '@edx/frontend-platform';
 
 const OptionBRedirect = ({onBack, userEmail, courseCode}) => {
+  const DISCORD_URL = getConfig().HUMAI_DISCORD_URL;
+  const CAMPUS_TITO_API_KEY = getConfig().HUMAI_CAMPUS_TITO_API_KEY;
+  
   useEffect(() => {
 
     const fetchTitoData = async () => {
