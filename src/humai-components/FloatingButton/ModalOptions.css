@@ -21,6 +21,9 @@
     justify-content: space-between;
     gap: 10px;
   }
+  .options.cooparte-disable {
+    justify-content: space-around;
+  }
   .info-container {
     display: flex;
     justify-content: flex-start;

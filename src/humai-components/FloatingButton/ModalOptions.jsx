@@ -36,8 +36,8 @@ const ModalOptions = ({ userEmail, courseCode, isValidCourse }) => {
         return (
           <div>
             <h3>¿Cómo podemos ayudarte?</h3>
-            <div className="options">
-              {!isValidCourse && (
+            <div className={"options" + (!isValidCourse ? " cooparte-disable" : "")}>
+              {isValidCourse && (
                 <ModalOption 
                   icon={
                     <svg viewBox="0 0 24 24" fill="currentColor">
