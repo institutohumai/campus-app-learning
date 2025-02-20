@@ -52,10 +52,6 @@ const FloatingButton = () => {
     };
   }, [showModal]);
 
-  if (!isValidCourse) {
-    return null;
-  }
-
   return (
     <div className="floating-button-container">
       <Tooltip text={"Levantá la mano"} isVisible={showTooltip && !showModal} />
@@ -72,6 +68,7 @@ const FloatingButton = () => {
           <ModalOptions
             courseCode={courseCode}
             userEmail={email}
+            isValidCourse={isValidCourse}
           />
         </Modal>
       )}
