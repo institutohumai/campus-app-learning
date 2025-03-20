@@ -35,6 +35,7 @@ import CourseAccessErrorPage from './generic/CourseAccessErrorPage';
 import DecodePageRoute from './decode-page-route';
 import { DECODE_ROUTES, ROUTES } from './constants';
 import PreferencesUnsubscribe from './preferences-unsubscribe';
+import FloatingButton from './humai-components/FloatingButton/FloatingButton';
 
 subscribe(APP_READY, () => {
   ReactDOM.render(
@@ -133,6 +134,7 @@ subscribe(APP_READY, () => {
                 />
               ))}
             </Routes>
+            <FloatingButton />
           </UserMessagesProvider>
         </NoticesProvider>
       </PathFixesProvider>

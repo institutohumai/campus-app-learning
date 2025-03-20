@@ -1,0 +1,37 @@
+.floating-button-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .floating-button {
+    width: 60px;
+    height: 60px;
+    background-color: #79168fd0;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  .floating-button:hover {
+    background-color: #8f1ca6d0;
+  }
+
+  .floating-button:hover span,
+  .floating-button:hover {
+    animation: wave 0.5s ease-in-out infinite;
+  }
+
+  @keyframes wave {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
+    100% { transform: rotate(0deg); }
+  }

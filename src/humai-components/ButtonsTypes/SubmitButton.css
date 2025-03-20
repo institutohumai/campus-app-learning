@@ -1,0 +1,49 @@
+.submit-button {
+  background-color: #F59410;
+  color: white;
+  font-weight: 700;
+}
+
+.submit-button:hover {
+  background-color: #dd850e;
+}
+
+.submit-button:active {
+  background-color: #c7760d;
+  transform: translateY(1px);
+}
+
+.submit-button:disabled {
+  background-color: #F59410;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submit-button:disabled:hover {
+  background-color: #F59410;
+}
+
+.button-container {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .button-container button {
+    padding: 8px 24px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
