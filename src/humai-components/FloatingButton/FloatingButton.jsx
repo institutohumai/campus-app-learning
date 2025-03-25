@@ -13,6 +13,7 @@ const FloatingButton = () => {
   const [showModal, setShowModal] = useState(false);
   const [courseCode, setCourseCode] = useState();
   const [isValidCourse, setIsValidCourse] = useState(false);
+  const [isValidCloudStudio, setIsValidCloudStudio] = useState(false);
   
   const { email } = getAuthenticatedUser();
   // const email = "pablosgomez50@gmail.com";
@@ -40,8 +41,10 @@ const FloatingButton = () => {
     if (course_code)
       setCourseCode(course_code);
 
-    if (course_keyname && !parsedExcludedCourses.includes(course_keyname))
-      setIsValidCourse(true);
+    if (course_keyname) {
+      setIsValidCourse(!parsedExcludedCourses.includes(course_keyname));
+      setIsValidCloudStudio(course_keyname.toLowerCase().includes("iot"));
+    }
   }
   
   
@@ -81,6 +84,7 @@ const FloatingButton = () => {
           <ModalOptions
             courseCode={courseCode}
             userEmail={email}
+            requestCloudStudio={isValidCloudStudio}
           />
         </Modal>
       )}

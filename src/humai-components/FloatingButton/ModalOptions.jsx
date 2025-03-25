@@ -11,9 +11,10 @@ import CloudStudioIcon from "../../utils/CloudStudioIcon";
 
 
 
-const ModalOptions = ({ userEmail, courseCode }) => {
+const ModalOptions = ({ userEmail, courseCode, requestCloudStudio }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [showToast, setShowToast] = useState({ show: false, message: '', type: 'success' });
+
 
   const renderContent = () => {
     switch (selectedOption) {
@@ -73,13 +74,15 @@ const ModalOptions = ({ userEmail, courseCode }) => {
               description="Conocé nuestros próximos eventos"
               onClick={() => setSelectedOption("C")}
             />
-            <ModalOption 
-              icon={
-                <CloudStudioIcon  />
-              }
-              description="Solcitar cuenta en Cloud Studio"
-              onClick={() => setSelectedOption("D")}
-            />
+            {requestCloudStudio &&
+              <ModalOption 
+                icon={
+                  <CloudStudioIcon  />
+                }
+                description="Solcitar cuenta en Cloud Studio"
+                onClick={() => setSelectedOption("D")}
+              />
+            }
             </div>
               
           </div>
