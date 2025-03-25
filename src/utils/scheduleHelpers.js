@@ -1,7 +1,7 @@
 export function transformScheduleDictToFormattedDates(scheduleDict) {
-  if (!scheduleDict) return [];
+  if (!scheduleDict) { return []; }
   const result = [];
-  const referenceDate = "2023-11-06";
+  const referenceDate = '2023-11-06';
   const baseDate = new Date(referenceDate);
 
   Object.keys(scheduleDict).forEach((day) => {
@@ -49,21 +49,6 @@ export function transformDatesToScheduleDict(dates) {
   return scheduleDict;
 }
 
-export const formatDates = (dates) => {
-  const withoutDuplicates = filterDuplicateDates(dates).map(
-    (date) => new Date(date)
-  );
-  return withoutDuplicates;
-};
-
-export const filterOutWeekends = (dates) => {
-  return dates?.filter((dateString) => {
-    const date = new Date(dateString);
-    const dayOfWeek = date.getDay();
-    return dayOfWeek !== 5 && dayOfWeek !== 6;
-  });
-};
-
 export const filterDuplicateDates = (dates) => {
   const uniqueDates = new Set();
   const filteredDates = [];
@@ -78,3 +63,16 @@ export const filterDuplicateDates = (dates) => {
 
   return filteredDates;
 };
+
+export const formatDates = (dates) => {
+  const withoutDuplicates = filterDuplicateDates(dates).map(
+    (date) => new Date(date),
+  );
+  return withoutDuplicates;
+};
+
+export const filterOutWeekends = (dates) => dates?.filter((dateString) => {
+  const date = new Date(dateString);
+  const dayOfWeek = date.getDay();
+  return dayOfWeek !== 5 && dayOfWeek !== 6;
+});
