@@ -43,7 +43,7 @@ const FloatingButton = () => {
 
     if (course_keyname) {
       setIsValidCourse(!parsedExcludedCourses.includes(course_keyname));
-      setIsValidCloudStudio(course_keyname.toLowerCase().includes("iot"));
+      // setIsValidCloudStudio(course_keyname.toLowerCase().includes("iot"));
     }
   }
   
