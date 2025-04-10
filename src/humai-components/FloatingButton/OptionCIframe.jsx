@@ -12,8 +12,14 @@ const OptionCIframe = ({ onBack }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const urlRegex = /(https?:\/\/[^\s]+)/g;
-  const CALENDAR_URL = getConfig().HUMAI_CALENDAR_URL;
-  const DAYS_BEFORE_CALENDAR = getConfig().HUMAI_DAYS_BEFORE_CALENDAR;
+  const { 
+    HUMAI_CALENDAR_USE_BACKEND,
+    HUMAI_CALENDAR_URL,
+    HUMAI_BACKEND_API_KEY,
+    HUMAI_EVENTS_CALENDAR_ID,
+    DAYS_BEFORE_CALENDAR
+  } = getConfig();
+  
   // const DAYS_BEFORE_CALENDAR = 3;
   const daysSpan = new Date();
   daysSpan.setDate(daysSpan.getDate() - DAYS_BEFORE_CALENDAR);
@@ -44,8 +50,30 @@ const OptionCIframe = ({ onBack }) => {
     }
   };
 
+  const fetchGcalendarEvents = async (url) => {
+    try {
+      const response = await fetch(`${url}/gcloud/calendar_events?calendar_id=${HUMAI_EVENTS_CALENDAR_ID}`, {
+        headers: {
+          Authorization: `Bearer ${HUMAI_BACKEND_API_KEY}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setEvents(data.map((event) => ({uid: event.id, ...event})));
+    } catch (error) {
+      console.error('Error fetching Google Calendar events:', error);
+    }
+  };
+
   useEffect(() => {
-    loadEvents(CALENDAR_URL);
+    if (HUMAI_CALENDAR_USE_BACKEND) {
+      fetchGcalendarEvents(HUMAI_CALENDAR_URL);
+    } else {
+      loadEvents(HUMAI_CALENDAR_URL);
+    }
   }, []);
 
   return (
