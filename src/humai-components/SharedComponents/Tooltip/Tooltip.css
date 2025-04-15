@@ -12,4 +12,6 @@
     font-size: 14px;
     white-space: nowrap;
     z-index: 3000;
+    text-wrap: auto;
+    max-width: 16rem;
 }
