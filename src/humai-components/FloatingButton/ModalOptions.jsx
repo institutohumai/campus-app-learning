@@ -6,8 +6,6 @@ import "./ModalOptions.css";
 
 import ModalOption from "../ModalOptions/ModalOption";
 import ToastMessage from "../SharedComponents/ToastMessage";
-import OptionDContainer from "./OptionDContainer";
-
 
 
 const ModalOptions = ({ userEmail, courseCode, requestCloudStudio }) => {
