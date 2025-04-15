@@ -3,22 +3,24 @@ import "./OptionAForm.css";
 import ClockButton from '../ButtonsTypes/ClockButton';
 import BackButton from "../ButtonsTypes/BackButton";
 
-import { OptionAFormContainer } from "./OptionAFormContainer";
 import { SubmitButton } from "../ButtonsTypes/SubmitButton";
 import { ScheduleContainer } from "../Schedule/ScheduleContainer";
 import moment from 'moment-timezone';
 import { getConfig } from '@edx/frontend-platform';
 
 import { transformDatesToScheduleDict, transformScheduleDictToFormattedDates } from '../../utils/scheduleHelpers';
+import Loader from "../SharedComponents/Loader";
 
-const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
+const OptionAForm = ({ onBack, setShowToast, userEmail, courseCode }) => {
   const [query, setQuery] = useState("");
   const [showCalendar, setShowCalendar] = useState(true);
   const [schedule, setSchedule] = useState({});
   const [newSchedule, setNewSchedule] = useState([]);
   const [timezone, setTimezone] = useState(moment.tz.guess());
   const [showTooltip, setShowTooltip] = useState(false);
-  
+
+  const [loadingSchedule, setLoadingSchedule] = useState(false);
+
   const {
     HUMAI_HORARIOS_URL,
     HUMAI_COOPARTE_NODE_NAME,
@@ -49,6 +51,8 @@ const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
     } catch (err) {
       console.error("Error getting user data from Cooparte:", err);
       setShowCalendar(true);
+    } finally {
+      setLoadingSchedule(false);
     }
   }
 
@@ -62,14 +66,14 @@ const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
           },
           body: JSON.stringify(data)
         })
-        
+
         if (!response.ok) {
           setShowToast("No se pudo enviar el mensaje!", "error");
           throw new Error('Network response was not ok')
         }
         setShowToast("¡Consulta enviada con éxito!", "success");
         onBack();
-        
+
       } catch (err) {
         setShowToast("No se pudo enviar el mensaje!", "error");
         console.error("Error sending query:", err);
@@ -95,7 +99,7 @@ const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
   };
 
   const handleBackClick = () => {
-    if(showCalendar) {
+    if (showCalendar) {
       if (newSchedule.length > 0) {
         setSchedule(transformDatesToScheduleDict(newSchedule));
       }
@@ -111,7 +115,7 @@ const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
   }
 
   const handleSendPosta = () => {
-    
+
     const sendCoopartePosta = async () => {
       try {
         const data = {
@@ -130,7 +134,7 @@ const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
           },
           body: JSON.stringify(data)
         })
-        
+
         if (!response.ok) {
           throw new Error('Network response was not ok')
         }
@@ -151,59 +155,67 @@ const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
 
   return (
     <>
-    {showCalendar ?
-      <OptionAFormContainer>
-        <ScheduleContainer 
-          handleBackClick={handleBackClick}
-          userEmail={userEmail}
-          courseCode={courseCode}
-          onToast={handleToast}
-          schedule={newSchedule}
-          setSchedule={setNewSchedule}
-          timezone={timezone}
-          setTimezone={setTimezone}
-          />
-      </OptionAFormContainer>
-      :
-      <OptionAFormContainer>
-      <div className="option-a-form">
-        
-          <div className="textarea-container">
-            <textarea
-              placeholder="Dejanos tu consulta acá..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              />
-          </div>
-    
-        <div 
-          className="button-container"
-          onMouseEnter={() => setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
-        >
-          <BackButton onClick={handleBackClick} />
-          <ClockButton
-            onClick={handleCalendarClick}
-            setOutsideToolTip={setShowTooltip}
-          />
-          <SubmitButton
-            handleSubmit={handleSubmit}
-            tooltipText={HUMAI_HORARIOS_TOOLTIP_TEXT}
-            disabled={!query.trim() || isScheduleEmpty(schedule) || !timezone.trim()}
-            showTooltip={showTooltip}
-          />
-          {(HUMAI_POSTA_ENABLE && courseCode?.length && courseCode.includes('lab')) &&
-            <SubmitButton
-            handleSubmit={handleSendPosta} 
-            disabled={isScheduleEmpty(schedule) || !timezone.trim()}
-            text="Solicitar posta"
-            /> 
+      {showCalendar ?
+        <div>
+          <h3>Selecciona tu disponibilidad horaria</h3>
+          {loadingSchedule ?
+            <Loader
+              text="Obteniendo horarios..."
+            />
+            :
+            <ScheduleContainer
+              handleBackClick={handleBackClick}
+              userEmail={userEmail}
+              courseCode={courseCode}
+              onToast={handleToast}
+              schedule={newSchedule}
+              setSchedule={setNewSchedule}
+              timezone={timezone}
+              setTimezone={setTimezone}
+            />
           }
         </div>
-      </div>
-    </OptionAFormContainer>
-  }
-  </>
+        :
+        <div>
+          <h3>Envía tu consulta</h3>
+          <div className="option-a-form">
+
+            <div className="textarea-container">
+              <textarea
+                placeholder="Dejanos tu consulta acá..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+            </div>
+
+            <div
+              className="button-container"
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+            >
+              <BackButton onClick={handleBackClick} />
+              <ClockButton
+                onClick={handleCalendarClick}
+                setOutsideToolTip={setShowTooltip}
+              />
+              <SubmitButton
+                handleSubmit={handleSubmit}
+                tooltipText={HUMAI_HORARIOS_TOOLTIP_TEXT}
+                disabled={!query.trim() || isScheduleEmpty(schedule) || !timezone.trim()}
+                showTooltip={showTooltip}
+              />
+              {(HUMAI_POSTA_ENABLE && courseCode?.length && courseCode.includes('lab')) &&
+                <SubmitButton
+                  handleSubmit={handleSendPosta}
+                  disabled={isScheduleEmpty(schedule) || !timezone.trim()}
+                  text="Solicitar posta"
+                />
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </>
   );
 };
 
