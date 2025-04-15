@@ -20,7 +20,6 @@ export const ScheduleContainer = (props) => {
                 />
             </div>
             <div className="button-container">
-                {/* <BackButton onClick={props.handleBackClick} /> */}
                 <SubmitButton
                     handleSubmit={props.handleBackClick}
                     text="Avanzar a la consulta"
