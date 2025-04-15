@@ -2,12 +2,11 @@ import React, { useEffect } from "react";
 // import { DISCORD_URL, CAMPUS_TITO_API_KEY } from "../../utils/constants";
 import { getConfig } from '@edx/frontend-platform';
 
-const OptionBRedirect = ({onBack, userEmail, courseCode}) => {
+const OptionBRedirect = ({onBack, userEmail, courseCode, setShowToast}) => {
   const DISCORD_URL = getConfig().HUMAI_DISCORD_URL;
   const CAMPUS_TITO_API_KEY = getConfig().HUMAI_CAMPUS_TITO_API_KEY;
-  
-  useEffect(() => {
 
+  useEffect(() => {
     const fetchTitoData = async () => {
       try {
         const headers = {
@@ -32,6 +31,7 @@ const OptionBRedirect = ({onBack, userEmail, courseCode}) => {
 
       } catch (error) {
         console.error("Error fetching invite data:", error);
+        setShowToast("Error al redirigir al canal de discord", "error");
       }
     };
     fetchTitoData();

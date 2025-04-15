@@ -1,4 +1,4 @@
-.tooltip {
+.humai-tooltip {
     position: absolute;
     bottom: 100%;
     margin-bottom: var(--tooltip-bottom, 15px);

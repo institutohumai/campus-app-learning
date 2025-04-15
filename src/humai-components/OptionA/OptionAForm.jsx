@@ -8,25 +8,23 @@ import { SubmitButton } from "../ButtonsTypes/SubmitButton";
 import { ScheduleContainer } from "../Schedule/ScheduleContainer";
 import moment from 'moment-timezone';
 import { getConfig } from '@edx/frontend-platform';
-// import { HORARIOS_URL } from '../../utils/constants';
 
 import { transformDatesToScheduleDict, transformScheduleDictToFormattedDates } from '../../utils/scheduleHelpers';
 
 const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
   const [query, setQuery] = useState("");
-  const [showCalendar, setShowCalendar] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(true);
   const [schedule, setSchedule] = useState({});
   const [newSchedule, setNewSchedule] = useState([]);
   const [timezone, setTimezone] = useState(moment.tz.guess());
   const [showTooltip, setShowTooltip] = useState(false);
-  // const POSTA_ENABLE = false;
-  // const POSTA_NODE = "posta";
-  // const COOPARTE_NODE = "cooparteInput";
-  const POSTA_ENABLE = getConfig().HUMAI_POSTA_ENABLE;
-  const POSTA_NODE = getConfig().HUMAI_COOPARTE_POSTA_NODE_NAME;
-  const COOPARTE_NODE = getConfig().HUMAI_COOPARTE_NODE_NAME;
-  const HORARIOS_URL = getConfig().HUMAI_HORARIOS_URL;
-
+  
+  const {
+    HUMAI_POSTA_ENABLE,
+    HUMAI_COOPARTE_POSTA_NODE_NAME,
+    HUMAI_COOPARTE_NODE_NAME,
+    HUMAI_HORARIOS_URL,
+  } = getConfig();
   const handleToast = ({ message, type }) => {
     setShowToast(message, type);
   };
@@ -34,7 +32,7 @@ const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
 
   const getUserCooparteData = async () => {
     try {
-      const response = await fetch(`${HORARIOS_URL}/api/users/user?userEmail=${userEmail}`);
+      const response = await fetch(`${HUMAI_HORARIOS_URL}/api/users/user?userEmail=${userEmail}`);
       if (!response.ok) {
         throw new Error('Network response was not ok')
       }
@@ -56,7 +54,7 @@ const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
   const handleSubmit = () => {
     const sendCooparteQuery = async (data) => {
       try {
-        const response = await fetch(`${HORARIOS_URL}/api/writeData`, {
+        const response = await fetch(`${HUMAI_HORARIOS_URL}/api/writeData`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -81,11 +79,11 @@ const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
         consultas: query,
         email: userEmail,
         reason: courseCode,
-        date: new Date().getTime(),
+        date: Math.floor(Date.now() / 1000),
         timezone: timezone,
         schedule: schedule
       },
-      nodeName: COOPARTE_NODE
+      nodeName: HUMAI_COOPARTE_NODE_NAME
     }
     // console.log("Data to send:", data);
     sendCooparteQuery(data);
@@ -122,9 +120,9 @@ const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
             schedule: schedule,
             timezone: timezone
           },
-          nodeName: POSTA_NODE
+          nodeName: HUMAI_COOPARTE_POSTA_NODE_NAME
         }
-        const response = await fetch(`${HORARIOS_URL}/api/stage/create`, {
+        const response = await fetch(`${HUMAI_HORARIOS_URL}/api/stage/create`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -193,7 +191,7 @@ const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
             disabled={!query.trim() || isScheduleEmpty(schedule) || !timezone.trim()}
             showTooltip={showTooltip}
           />
-          {(POSTA_ENABLE && courseCode?.length && courseCode.includes('lab')) &&
+          {(HUMAI_POSTA_ENABLE && courseCode?.length && courseCode.includes('lab')) &&
             <SubmitButton
             handleSubmit={handleSendPosta} 
             disabled={isScheduleEmpty(schedule) || !timezone.trim()}

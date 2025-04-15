@@ -12,7 +12,7 @@ const Tooltip = ({ text, isVisible, alignment = 'right' }) => {
   };
   
   return (
-    <div className="tooltip" style={alignmentStyle}>
+    <div className="humai-tooltip" style={alignmentStyle}>
       {text}
     </div>
   );

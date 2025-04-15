@@ -13,26 +13,37 @@ const FloatingButton = () => {
   const [showModal, setShowModal] = useState(false);
   const [courseCode, setCourseCode] = useState();
   const [isValidCourse, setIsValidCourse] = useState(false);
+  const [isValidCloudStudio, setIsValidCloudStudio] = useState(false);
   
   const { email } = getAuthenticatedUser();
   // const email = "pablosgomez50@gmail.com";
 
   const handleOpenModal = () => setShowModal(true);
 
-  const updateCourseCode = () => {
-    // const configExcludedCourses = undefined;
-    const configExcludedCourses = getConfig().HUMAI_EXCLUDED_COURSES;
-    const parsedExcludedCourses = configExcludedCourses ? configExcludedCourses : [];
+  const extractCourseInfo = () => {
     const path = window.location.pathname;
     const regex = /\/course-v1:\w+\+(\w+)\+([\w.]+)/;
     const match = path.match(regex);
     const course_keyname = match ? match[1] : undefined;
     const course_code = match ? match[2] : undefined;
+    return {
+      course_keyname,
+      course_code
+    };
+  }
+
+  const updateCourseCode = () => {
+    // const configExcludedCourses = undefined;
+    const configExcludedCourses = getConfig().HUMAI_EXCLUDED_COURSES;
+    const parsedExcludedCourses = configExcludedCourses ? configExcludedCourses : [];
+    
+    const { course_keyname, course_code } = extractCourseInfo();
     if (course_code)
       setCourseCode(course_code);
 
-    if (course_keyname && !parsedExcludedCourses.includes(course_keyname))
-      setIsValidCourse(true);
+    if (course_keyname) {
+      setIsValidCourse(!parsedExcludedCourses.includes(course_keyname));
+    }
   }
   
   
@@ -52,6 +63,10 @@ const FloatingButton = () => {
     };
   }, [showModal]);
 
+  if (!getConfig().HUMAI_COOPARTE_ENABLE || !isValidCourse) {
+    return null;
+  }
+
   return (
     <div className="floating-button-container">
       <Tooltip text={"Levantá la mano"} isVisible={showTooltip && !showModal} />
@@ -68,7 +83,6 @@ const FloatingButton = () => {
           <ModalOptions
             courseCode={courseCode}
             userEmail={email}
-            isValidCourse={isValidCourse}
           />
         </Modal>
       )}
