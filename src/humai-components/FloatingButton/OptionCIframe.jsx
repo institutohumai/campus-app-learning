@@ -18,12 +18,12 @@ const OptionCIframe = ({ onBack }) => {
     HUMAI_ICALENDAR_URL,
     HUMAI_BACKEND_API_KEY,
     HUMAI_EVENTS_CALENDAR_ID,
-    DAYS_BEFORE_CALENDAR
+    HUMAI_DAYS_BEFORE_CALENDAR
   } = getConfig();
   
-  // const DAYS_BEFORE_CALENDAR = 3;
+  // const HUMAI_DAYS_BEFORE_CALENDAR = 3;
   const daysSpan = new Date();
-  daysSpan.setDate(daysSpan.getDate() - DAYS_BEFORE_CALENDAR);
+  daysSpan.setDate(daysSpan.getDate() - HUMAI_DAYS_BEFORE_CALENDAR);
 
   
   const formatGCalendarDate = (date) => {

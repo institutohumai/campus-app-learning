@@ -20,10 +20,11 @@ const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
   const [showTooltip, setShowTooltip] = useState(false);
   
   const {
-    HUMAI_POSTA_ENABLE,
-    HUMAI_COOPARTE_POSTA_NODE_NAME,
-    HUMAI_COOPARTE_NODE_NAME,
     HUMAI_HORARIOS_URL,
+    HUMAI_COOPARTE_NODE_NAME,
+    HUMAI_HORARIOS_TOOLTIP_TEXT,
+    HUMAI_COOPARTE_POSTA_NODE_NAME,
+    HUMAI_POSTA_ENABLE,
   } = getConfig();
   const handleToast = ({ message, type }) => {
     setShowToast(message, type);
@@ -187,7 +188,7 @@ const OptionAForm = ({onBack, setShowToast, userEmail, courseCode}) => {
           />
           <SubmitButton
             handleSubmit={handleSubmit}
-            tooltipText="Completa el horario y zona horaria" 
+            tooltipText={HUMAI_HORARIOS_TOOLTIP_TEXT}
             disabled={!query.trim() || isScheduleEmpty(schedule) || !timezone.trim()}
             showTooltip={showTooltip}
           />
