@@ -9,7 +9,7 @@ const InfoIcon = ({ tooltipText = "Esta es una información adicional", size = "
       <Tooltip 
         alignment="center"
         isVisible={showTooltip} 
-        text={tooltipText} 
+        text={tooltipText}
       />
       <div onMouseEnter={() => setShowTooltip(true)} onMouseLeave={() => setShowTooltip(false)} >
         <div className={`info-icon ${size}`}>
